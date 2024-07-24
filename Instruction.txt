@@ -1,0 +1,49 @@
+Before run or execution of the program, The following instructions need to be done.
+
+1. Required to install postgres EXTENSION pgvector for vector support
+
+		Refer to the Link: https://github.com/pgvector/pgvector
+
+
+2. After installation, two tables need to create in pgAdmin (Due to pgvector extension i have not crated the tables in program)
+	
+		CREATE TABLE intent_tree (treeid bigserial PRIMARY KEY, questions text[], tree jsonb not null default '{}'::jsonb);
+		CREATE TABLE intent_embeddings (nodeid bigserial PRIMARY KEY, treeid bigserial, embedding vector(1024));
+
+Note: Might be some error can be displayed for the vector size(1024), due to maximum size 768. then padding will require 
+				
+		CREATE TABLE intent_embeddings (nodeid bigserial PRIMARY KEY, treeid bigserial, embedding vector(768));(Redefine)
+		
+		ALTER TABLE intent_embeddings ALTER COLUMN embedding SET DATA TYPE vector(768);
+		UPDATE intent_embeddings
+		SET embedding = pad_vector(embedding);
+
+
+The program is in testing position. It will change. I also generated JSON file for looking of that tree.
+
+About the program:
+
+The program uses several libraries, including:
+
+- numpy for numerical computations
+- scikit-learn for machine learning algorithms
+- transformers for the BERT language model
+- torch for tensor computations
+- json for JSON serialization
+- nltk for natural language processing
+- psycopg2 for PostgreSQL database interactions
+
+The program also defines several functions, including:
+
+- get_bert_embedding: generates a BERT embedding for a given question
+- load_questions: loads a list of questions from a file
+- create_initial_clusters: creates an initial set of clusters based on question embeddings
+- merge_clusters: merges similar clusters together based on a similarity threshold
+- build_hierarchy: builds a hierarchical intent tree by recursively merging clusters
+- generate_intent_label: generates a label for a cluster based on its questions
+- print_cluster_tree: prints a visual representation of the intent tree
+- bfs_search: performs a breadth-first search to find similar clusters
+- insert_question: inserts a new question into the intent tree
+- store_intent_tree: stores the intent tree in a PostgreSQL database
+- store_embeddings: stores the question embeddings in a PostgreSQL database
+- construct_intent_tree: builds and stores the intent tree
