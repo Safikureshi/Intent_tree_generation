@@ -1,5 +1,4 @@
-The intent tree update still in progress...little glitch is there. It will done within this week.
-The description of each function in the Intent Tree Builder Module:
+The intent tree update still in progress...little glitch is there. 
 
 1. load_questions(file_path)
 
